@@ -1,5 +1,5 @@
 pipeline {
-    agent any 
+    agent any
     
     tools {
         jdk 'jdk11'
@@ -8,17 +8,17 @@ pipeline {
     
     environment {
         SCANNER_HOME = tool 'sonar-scanner'
+        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')
+        IMAGE_NAME = 'chidanand876/pet-clinic123'
+        TAG = 'latest'
     }
     
     stages {
-        
         stage("Git Checkout") {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/jaiswaladi246/Petclinic.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/chida876/Petclinic.git']]])
             }
         }
-        
-       
         
         stage("Sonarqube Analysis") {
             steps {
@@ -26,8 +26,20 @@ pipeline {
                 sh """mvn sonar:sonar \
                       -Dsonar.projectKey=petclnic \
                       -Dsonar.host.url=http://3.106.229.252:9000 \
-                       -Dsonar.login=7ee0e6013b828d29c1db08f88bb9374da394e732"""
-               
+                      -Dsonar.login=7ee0e6013b828d29c1db08f88bb9374da394e732"""
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build -t $IMAGE_NAME:$TAG ."
+            }
+        }
+
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                sh "docker login -u ${DOCKER_HUB_CREDENTIALS_USR} -p ${DOCKER_HUB_CREDENTIALS_PSW}"
+                sh "docker push $IMAGE_NAME:$TAG"
             }
         }
     }
