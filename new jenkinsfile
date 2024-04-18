@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
     
@@ -25,7 +26,7 @@ pipeline {
                 sh "mvn clean package"
                 sh """mvn sonar:sonar \
                       -Dsonar.projectKey=petclnic \
-                      -Dsonar.host.url=http://3.106.229.252:9000 \
+                      -Dsonar.host.url=http://54.252.183.46:9000 \
                       -Dsonar.login=7ee0e6013b828d29c1db08f88bb9374da394e732"""
             }
         }
@@ -35,8 +36,10 @@ pipeline {
                 sh "docker build -t $IMAGE_NAME:$TAG ."
             }
         }
-
-        stage('Push Docker Image to Docker Hub') {
+        
+        
+        
+         stage('Push Docker Image to Docker Hub') {
             steps {
                 sh "docker login -u ${DOCKER_HUB_CREDENTIALS_USR} -p ${DOCKER_HUB_CREDENTIALS_PSW}"
                 sh "docker push $IMAGE_NAME:$TAG"
