@@ -1,5 +1,9 @@
 pipeline {
     agent any
+environment {
+IMAGE_NAME = 'ramesh316/sample'
+        TAG = 'latest'
+}
   stages{
         stage("Cleanup Workspace"){
                 steps {
@@ -21,5 +25,13 @@ stage ("Test application") {
            sh "mvn test"
               }
          }
+
+stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build("$IMAGE_NAME:$TAG")
+                }
+            }
+        }
     }  
 }
