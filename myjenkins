@@ -1,9 +1,5 @@
 pipeline {
-    agent { label 'jenkins-agent' }
-tools {
-     jdk 'java17' 
-     maven 'maven3'
-   }
+    agent any
   stages{
       stage ("cleanup workspace") {
              steps {
@@ -12,7 +8,7 @@ tools {
       }
  stage("checkout from SCM") {
       steps {
-        git branch: 'main' , credentialsId: 'github' , url: 'https://github.com/rameshgit16/Petclinic/blob/main/myjenkins'
+        git branch: 'main' , credentialsId: 'github' , url: 'https://github.com/rameshgit16/Petclinic.git'
         }
    }
 stage ("Build application") {
