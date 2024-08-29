@@ -43,5 +43,12 @@ stage('Build Docker Image') {
             }
         }
     }  
+ stage(' Docker run') {
+            steps {
+                script {
+                        withDockerContainer(args: '-d -p 8082:8082', image: '$IMAGE_NAME:$TAG')                                       
+            }
+        }
+    }  
 }
 }
