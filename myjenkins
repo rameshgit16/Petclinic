@@ -33,5 +33,15 @@ stage('Build Docker Image') {
                 }
             }
         }
+ stage('Push Docker Image') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'dockerhub-cd') {
+                        docker.image("$IMAGE_NAME:$TAG").push()
+                    
+                }            
+            }
+        }
     }  
+}
 }
