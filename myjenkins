@@ -1,6 +1,11 @@
 pipeline {
     agent any
   stages{
+        stage("Cleanup Workspace"){
+                steps {
+                cleanWs()
+                }
+            }
 stage("checkout from SCM") {
       steps {
         git branch: 'main' , credentialsId: 'github' , url: 'https://github.com/rameshgit16/Petclinic.git'
