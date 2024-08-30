@@ -28,7 +28,7 @@ stage ("Test application") {
          }
 
       stage ('SonarQube Analysis') {
-        Steps {
+        steps {
       withSonarQubeEnv() {
          sh "mvn clean verify sonar:sonar -Dsonar.projectKey=sonar-petclinic -Dsonar.projectName='sonar-petclinic'"
      }
