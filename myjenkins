@@ -1,6 +1,7 @@
 pipeline {
     agent any
 environment {
+SCANNER_HOME = tool 'sonar-scanner'
 IMAGE_NAME = 'ramesh316/sample'
         TAG = 'latest'
 }
@@ -25,6 +26,17 @@ stage ("Test application") {
            sh "mvn test"
               }
          }
+
+ stage('Sonarqube Analysis') {
+            steps {
+                sh 'mvn clean package'
+                sh """mvn sonar:sonar \
+                      Dsonar.projectKey=sonar-petclinic \
+                      -Dsonar.projectName='sonar-petclinic' \
+                      -Dsonar.host.url=http://35.154.19.150:9000 \
+                      -Dsonar.token=sqp_8818ce633ae94a6a003742281ff4502b12ddbaa6"""
+                  }
+                }
 
 stage('Build Docker Image') {
             steps {
