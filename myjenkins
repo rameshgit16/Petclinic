@@ -1,6 +1,7 @@
 pipeline {
     agent any
 environment {
+SONAR_TOKEN = credentials('sonarqube-token')
 IMAGE_NAME = 'ramesh316/sample'
         TAG = 'latest'
 }
@@ -34,7 +35,7 @@ stage ("Test application") {
                -Dsonar.projectKey=sonar-petclinic \
                -Dsonar.projectName="sonar-petclinic" \
                -Dsonar.host.url=http://35.154.19.150:9000 \
-               -Dsonar.token=sqp_8818ce633ae94a6a003742281ff4502b12ddbaa6
+               -Dsonar.token=${SONAR_TOKEN}
             '''
                   }
                 }
