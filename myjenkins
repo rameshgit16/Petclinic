@@ -28,10 +28,12 @@ stage ("Test application") {
          }
 
       stage ('SonarQube Analysis') {
+        Steps {
       withSonarQubeEnv() {
          sh "mvn clean verify sonar:sonar -Dsonar.projectKey=sonar-petclinic -Dsonar.projectName='sonar-petclinic'"
-    }
+     }
   }
+}
 stage('Build Docker Image') {
             steps {
                 script {
