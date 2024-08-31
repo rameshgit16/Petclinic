@@ -42,13 +42,7 @@ stage('Build Docker Image') {
             }
         }
 
-    stage('Security Scan') {
-            steps {
-               Script {
-                sh "trivy $IMAGE_NAME:$TAG"
-           }
-        }
-   }
+   
  stage('Push Docker Image') {
             steps {
                 script {
@@ -59,6 +53,12 @@ stage('Build Docker Image') {
             }
         }
     }  
- 
+  stage('Security Scan') {
+            steps {
+               script {
+                sh "trivy image ${IMAGE_NAME}:${TAG}"
+           }
+        }
+     }
   }
 }
